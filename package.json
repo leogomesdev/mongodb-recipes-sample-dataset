@@ -1,0 +1,23 @@
+{
+  "name": "mongodb-recipes-sample-dataset",
+  "version": "1.0.0",
+  "description": "A sample collection of recipes documents, using synthetic data",
+  "main": "src/myapp.js",
+  "scripts": {
+    "start": "node src/myapp.js"
+  },
+  "author": "Leonardo Gomes",
+  "license": "MIT",
+  "keywords": [
+    "nodejs",
+    "mongodb",
+    "sampleDataset",
+    "recipes"
+  ],
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "@faker-js/faker": "^9.0.0-alpha.1",
+    "joi": "^17.13.3",
+    "mongodb": "6.7"
+  }
+}
