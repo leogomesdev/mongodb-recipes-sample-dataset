@@ -4,7 +4,7 @@ This project provides a sample dataset of recipes to be used with MongoDB. It al
 
 ## Requirements
 
-- Node.js v16 or higher
+- Node.js v20 or higher
 - A MongoDB server where the data will be saved
 
 ## Setup Instructions
