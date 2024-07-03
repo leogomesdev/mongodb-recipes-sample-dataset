@@ -2,9 +2,9 @@
   "name": "mongodb-recipes-sample-dataset",
   "version": "1.0.0",
   "description": "A sample collection of recipes documents, using synthetic data",
-  "main": "src/myapp.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node src/myapp.js"
+    "start": "node src/index.js"
   },
   "author": "Leonardo Gomes",
   "license": "MIT",
