@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A sample collection of recipes documents, using synthetic data",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "start": "node src/index.js"
   },

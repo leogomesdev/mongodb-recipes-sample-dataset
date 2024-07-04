@@ -1,75 +1,65 @@
-const { faker } = require("@faker-js/faker");
-const MongoClient = require("mongodb").MongoClient;
+import { faker } from '@faker-js/faker';
+import { MongoClient, Collection } from 'mongodb';
 
-const config = require("./config");
+import config from './config.js';
 
 /**
  * Seeds the MongoDB database with synthetic data.
- * @async
- * @function seedDB
  * @returns {Promise<void>}
  */
-seedDB = async () => {
+async function seedDB() {
   const client = new MongoClient(config.mongodbUri);
 
   try {
-    const collection = await getMongoDBCollection(client, config);
+    const collection = await getMongoCollection(client);
 
     if (config.mongodbResetBeforeInserting) {
-      await deleteExistingData(collection, config);
+      await deleteExistingData(collection);
     }
 
-    const recipes = createSyntheticData(config.recipesToInsert);
-    await writeSyntheticDataIntoDB(collection, recipes, config);
+    const recipes = createSyntheticData();
+    await writeSyntheticDataIntoDB(collection, recipes);
   } catch (err) {
     console.log(err.stack);
   } finally {
     await client.close();
   }
-};
+}
 
 /**
  * Deletes all existing documents from a MongoDB collection.
- * @async
- * @function deleteExistingData
- * @param {MongoCollection} collection - MongoDB collection object.
- * @param {object} options - Configuration object.
- * @param {string} options.mongodbDatabase - MongoDB database name.
- * @param {string} options.mongodbCollection - MongoDB collection name.
+ * @param {Collection} collection - MongoDB collection object.
  * @returns {Promise<void>}
  */
-deleteExistingData = async (collection, { mongodbDatabase, mongodbCollection }) => {
+async function deleteExistingData(collection) {
   await collection.deleteMany({});
-  console.log(`Previous data deleted from ${mongodbDatabase}.${mongodbCollection}`);
-};
+  console.log(
+    `Previous data deleted from ${config.mongodbDatabase}.${config.mongodbCollection}`
+  );
+}
 
 /**
  * Connects to MongoDB using the provided MongoDB client and returns the specified collection.
- * @async
- * @function getMongoDBCollection
  * @param {MongoClient} client - MongoDB client instance.
- * @param {object} options - Configuration object.
- * @param {string} options.mongodbDatabase - MongoDB database name.
- * @param {string} options.mongodbCollection - MongoDB collection name.
- * @returns {Promise<MongoCollection>} MongoDB collection object.
+ * @returns {Promise<Collection>} MongoDB collection object.
  */
-getMongoDBCollection = async (client, { mongodbDatabase, mongodbCollection }) => {
+async function getMongoCollection(client) {
   await client.connect();
-  console.log("Connected correctly to server");
+  console.log('Connected correctly to server');
 
-  const collection = client.db(mongodbDatabase).collection(mongodbCollection);
+  const collection = client
+    .db(config.mongodbDatabase)
+    .collection(config.mongodbCollection);
 
   return collection;
-};
+}
 
 /**
  * Generates synthetic recipe data based on the number of recipes to insert.
- * @function createSyntheticData
- * @param {number} recipesToInsert - Number of synthetic recipes to generate.
  * @returns {Array<Object>} Array of synthetic recipe objects.
  */
-createSyntheticData = (recipesToInsert) => {
-  return Array.from({ length: recipesToInsert }, () => {
+function createSyntheticData() {
+  return Array.from({ length: config.numerOfRecipesToInsert }, () => {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
     const updatedAt = faker.date.past();
@@ -93,20 +83,15 @@ createSyntheticData = (recipesToInsert) => {
       updated_at: updatedAt,
     };
   });
-};
+}
 
 /**
  * Writes synthetic recipe data into the MongoDB collection.
- * @async
- * @function writeSyntheticDataIntoDB
- * @param {MongoCollection} collection - MongoDB collection object.
+ * @param {Collection} collection - MongoDB collection object.
  * @param {Array<Object>} recipes - Array of synthetic recipe objects to insert.
- * @param {object} options - Configuration object.
- * @param {string} options.mongodbDatabase - MongoDB database name.
- * @param {string} options.mongodbCollection - MongoDB collection name.
  * @returns {Promise<void>}
  */
-writeSyntheticDataIntoDB = async (collection, recipes, { mongodbDatabase, mongodbCollection }) => {
+async function writeSyntheticDataIntoDB(collection, recipes) {
   const bulkOps = recipes.map((recipe) => ({
     insertOne: {
       document: recipe,
@@ -115,8 +100,10 @@ writeSyntheticDataIntoDB = async (collection, recipes, { mongodbDatabase, mongod
 
   const result = await collection.bulkWrite(bulkOps);
 
-  console.log(`${result.insertedCount} recipes inserted into ${mongodbDatabase}.${mongodbCollection}`);
-};
+  console.log(
+    `${result.insertedCount} recipes inserted into ${config.mongodbDatabase}.${config.mongodbCollection}`
+  );
+}
 
 // Call the seedDB function to populate MongoDB with synthetic data
 seedDB();
