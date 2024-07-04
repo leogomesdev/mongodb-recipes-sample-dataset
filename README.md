@@ -1,6 +1,14 @@
 # MongoDB Recipes Sample Dataset
 
-This project provides a sample dataset of recipes to be used with MongoDB. It allows you to quickly populate a MongoDB collection with a specified number of recipe documents.
+This project provides a sample dataset of recipes to be used with MongoDB.
+
+It allows you to quickly populate a MongoDB collection with a specified number of recipe documents.
+
+## Workflow Diagram
+
+Below is the workflow diagram that illustrates the process:
+
+![Workflow Diagram](docs/workflow.jpg)
 
 ## Requirements
 
@@ -35,14 +43,14 @@ cd mongodb-recipes-sample-dataset
   MONGODB_DATABASE=your_database_name
   MONGODB_COLLECTION=your_collection_name
   MONGODB_RESET_BEFORE_INSERTING=true_or_false
-  RECIPES_TO_INSERT=number_of_documents_to_insert
+  NUMBER_OF_RECIPES_TO_INSERT=number_of_documents_to_insert
 ```
 
 - `MONGODB_URI`: The connection string for the MongoDB server
 - `MONGODB_DATABASE`: The name of the MongoDB database
 - `MONGODB_COLLECTION`: The name of the MongoDB collection
 - `MONGODB_RESET_BEFORE_INSERTING`: If set to true, all records in the collection will be deleted before inserting new documents
-- `RECIPES_TO_INSERT`: The number of recipe documents to insert into the collection
+- `NUMBER_OF_RECIPES_TO_INSERT`: The number of recipe documents to insert into the collection
 
 ## Running the Project
 
